@@ -13,8 +13,8 @@ project-specific context for the PM agent. edit this file as the project evolves
 ## verification commands
 
 <the commands a worker must run before moving a task to review/. examples:>
-<- `pnpm test`>
-<- `pnpm typecheck`>
+<- `bun test`>
+<- `bun run typecheck`>
 <- `xcodebuild -project foo.xcodeproj -scheme foo -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO`>
 
 if there are no verification commands yet, say so explicitly. don't leave it blank.

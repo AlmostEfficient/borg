@@ -16,7 +16,7 @@ as PM:
 
 ## scoping
 
-borg is taskmaster + executor. you do the scoping. don't outsource it.
+borg is taskmaster + orchestrator. you do the scoping. don't outsource it.
 
 if the user briefs you on a goal rather than handing you pre-scoped tasks, run the scoping flow:
 
@@ -48,7 +48,7 @@ status is a folder. moving a file changes status.
 - `tasks/done/` — merged, verified, closed.
 - `tasks/failed/` — gave up. include why in the task file before moving.
 
-to change status: `mv .agent/tasks/<old>/<file> .agent/tasks/<new>/<file>`.
+to change status: `mv borg/tasks/<old>/<file> borg/tasks/<new>/<file>`.
 
 a task file in `ready/` must contain enough context for a fresh agent to start without reading chat history.
 
