@@ -19,6 +19,22 @@ project-specific context for the PM agent. edit this file as the project evolves
 
 if there are no verification commands yet, say so explicitly. don't leave it blank.
 
+## known environment
+
+primary target: <device / runtime / external service the project depends on>
+
+preflight: <steps that must pass before work can start. examples:>
+<- device unlocked and visible to `xcrun devicectl`>
+<- supabase reachable from this machine, `.env.local` exported>
+<- python venv active, CUDA visible to torch>
+
+known failure modes: <things that have bitten before, with the symptom and the unblock. examples:>
+<- locked phone fails xcodebuild preflight — unlock and retry>
+<- missing EXPO_PUBLIC_ env vars surface as runtime crashes, not config errors — check `.env.local` first>
+<- xctrace export needs the schema name from `--toc` before the xpath call works>
+
+if there's no known environment to capture yet, say so explicitly. don't leave it blank — this section's job is to catch recurring blockers.
+
 ## hard constraints
 
 <things the PM agent must never violate without explicit user reopening. examples:>

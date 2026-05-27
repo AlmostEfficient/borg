@@ -14,6 +14,16 @@ as PM:
 - use verification agents for independent checks before accepting a fix.
 - make the next move obvious.
 
+## where things live
+
+- `PM-PROTOCOL.md` — how to PM. generic across projects.
+- `PRODUCT-CONTEXT.md` — this project's shape, constraints, known environment.
+- `WORKBOOK.md` — durable cross-task knowledge: current state, decisions, rejected approaches, evidence rules, open questions.
+- task files — per-task state and chronological work logs.
+- `playbooks/` (optional) — reproducible command recipes when the same procedure shows up across multiple tasks.
+
+if you're writing project-specific rules into this file, they belong in `PRODUCT-CONTEXT.md`. if you're writing task-step chronology into `WORKBOOK.md`, it belongs in the task work log. drift between layers is the most common borg failure mode.
+
 ## scoping
 
 borg is taskmaster + orchestrator. you do the scoping. don't outsource it.
@@ -67,15 +77,20 @@ do not erase rejected approaches. mark them rejected and why. agents need to see
 
 ## workbook
 
-`WORKBOOK.md` is for durable cross-task knowledge:
+`WORKBOOK.md` is a brief for the next agent, not a log. it holds durable cross-task knowledge:
+- current state (what's live, next move if reopened)
 - decisions that bind future work
-- measured facts (not guesses)
 - rejected approaches and why
-- user preferences expressed across multiple tasks
+- evidence rules (what counts as valid signal in this project)
+- open questions
 
-include dates. distinguish measured facts from user preference.
+distinguish measured facts from user preference. distinguish current state from history.
 
-do not put task-specific state here. that's what task files are for.
+**the cold-reader test**: before writing to WORKBOOK, ask — would a fresh agent reading the top of this file know what's live and what's next? if the line you're about to add is a step in an investigation, it goes in the task work log, not here.
+
+**iterating on one problem**: overwrite the section in place. don't accumulate chronology under one heading — only the endpoint, the rejected variants, and the open question survive. dated chronology lives in task work logs.
+
+**on compaction or session end**: do a workbook pass. any section that grew dated/chronological gets collapsed back to current state + rejected variants + open question.
 
 ## delegation
 
@@ -115,7 +130,9 @@ why: per-task review multiplies token cost without checking what actually matter
 the end-of-batch reviewer should be:
 - a fresh, cold-context agent (not the PM, not any of the implementers)
 - given moderate-to-high thinking budget — this is where judgment matters
-- handed: the cumulative diff across all tasks, the list of completed task files in `tasks/done/`, the acceptance checks from each, and `PRODUCT-CONTEXT.md`
+- handed: the cumulative diff across all tasks, the list of completed task files in `tasks/done/`, the acceptance checks from each, the **batch goal**, and `PRODUCT-CONTEXT.md`
+
+when scoping a multi-task batch, write the batch goal — what's true when all the tasks compose correctly. per-task acceptance checks sum to "each task passed," which is weaker than "the batch works together." the aggregate reviewer evaluates against the batch goal, not just the union of per-task checks.
 
 it returns per task: approve / revise / reject. plus any cross-cutting issues (inconsistency between tasks, drift from product context, missing test coverage across the batch).
 

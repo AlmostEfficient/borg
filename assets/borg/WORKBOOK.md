@@ -1,22 +1,31 @@
 # Workbook
 
-durable cross-task findings, decisions, rejected approaches, and user preferences.
+durable cross-task knowledge for the next agent. a brief, not a log.
 
-task-specific state belongs in task files, not here.
+## the rule
 
-## format
+before writing here: would a fresh agent reading only the top of this file know what's live and what's next? if the line you're about to add is a step in an investigation, it belongs in the task work log, not here.
 
-each entry:
+iterating on one problem? overwrite the section in place with the current state. don't accumulate chronology under one heading — only the endpoint, the rejected variants, and the open question survive.
 
-```
-### YYYY-MM-DD — short title
-**type**: decision | finding | rejected | preference
-**body**: what was learned or decided. include the why.
-**source**: task file or conversation that produced this.
-```
+on compaction or session end, do a workbook pass. any section that grew dated/chronological gets collapsed back to: current state + rejected variants + open question.
 
-distinguish measured facts from user preference. don't erase rejected approaches — mark them rejected with the reason.
+## current state
 
-## entries
+what's live right now. branch / commit / what's shipped / next move if reopened. edit in place; this is a banner, not a history.
 
-<the PM agent appends here as work progresses. start empty.>
+## decisions
+
+durable choices that bind future work. include the why.
+
+## rejected
+
+dead ends with reasons. never delete — agents need to see what's been tried.
+
+## evidence rules
+
+what counts as valid signal in this project. what doesn't. the trust hierarchy. agents fall back to the wrong metric every compaction without this written down.
+
+## open questions
+
+unanswered things that aren't tasks. "we'd need to know X before deciding Y."

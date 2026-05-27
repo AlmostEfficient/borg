@@ -81,6 +81,7 @@ borg V1 is bootstrap + protocol + folder queue. the rest, in order of leverage:
 3. **worktrees** — `borg/worktrees/<task-id>/` per task. deferred because borg is mobile-first right now and hardware-bound stacks (iOS, React Native/Expo) can only have one runtime install testable at a time. worktrees still help for parallel *code editing* on disjoint areas, but small win until non-mobile work shows up.
 4. **notifications** — ntfy/Slack/macOS notif on `review/` or `failed/` status changes. deferred because terminal-watching is fine for now.
 5. **automated reviewer** — script triggers a cold-context reviewer when status hits `review/`. currently PM-managed (the protocol tells the PM to spawn an aggregate reviewer at end-of-batch). undecided whether automating wins long-term — leaving the door open.
+6. **dispatcher** — small script that claims `ready/` tasks, spawns agents, moves task files between status folders, and reports completion. deferred until the manual PM loop proves exactly which handoffs should be automated.
 
 add these only when the absence hurts.
 
