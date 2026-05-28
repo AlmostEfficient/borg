@@ -55,3 +55,18 @@ durable facts discovered during this task. if a finding will bind future work, p
 ## Status notes
 
 current blocker, open question, or "ready for review by X". short.
+
+## Review receipt
+
+filled when the task is approved into `done/`. binds the approval to the exact
+code state the reviewer saw, so a later change to the covered files makes the
+approval visibly stale instead of silently wrong. empty until reviewed.
+
+- **verdict**: approve | revise | reject
+- **reviewed against**: <commit sha the diff was reviewed at>
+- **covers**: <paths/globs this approval is responsible for — usually this task's Files / areas>
+- **date**: YYYY-MM-DD
+
+a task in `done/` is stale if `git diff <reviewed against> HEAD -- <covers>` is
+non-empty: the covered code changed since approval, so `done/` no longer holds.
+re-review before trusting it.

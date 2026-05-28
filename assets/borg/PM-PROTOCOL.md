@@ -99,6 +99,8 @@ use subagents for:
 - codebase investigation
 - final verification (see `review` section below for when)
 
+the deciding question isn't task size, it's context cost: if doing it yourself would burn more of your main thread than spawning would — a one-line fix that needs reading four large files to make safely, say — delegate it. cheap-to-do but expensive-to-read work still belongs in a subagent. protecting the main thread is the point.
+
 give each subagent:
 - exact scope
 - files or areas likely involved
@@ -137,6 +139,16 @@ when scoping a multi-task batch, write the batch goal — what's true when all t
 it returns per task: approve / revise / reject. plus any cross-cutting issues (inconsistency between tasks, drift from product context, missing test coverage across the batch).
 
 exception: if a task is high-risk (touches auth, migrations, payments, or anything flagged in `PRODUCT-CONTEXT.md`'s constraints), run a per-task reviewer before moving it to `done/`. the default is aggregate; high-risk overrides.
+
+### review receipts
+
+an approval is only valid for the code the reviewer actually saw. `done/` means "approved" — but code keeps moving (a reworked `revise`, a later task touching the same files, the next batch). without a binding, a task sits in `done/` vouching for a state that no longer exists, and nothing reveals it.
+
+so when a task moves `review/` → `done/`, write a **Review receipt** in the task file (see `templates/task.md`): the verdict, the commit sha the diff was reviewed at, and the paths the approval covers (usually the task's Files / areas). a git sha is a content fingerprint — this extends the existing "record the commit hash in the work log" convention, no new tooling.
+
+this makes a stale approval structurally detectable instead of a thing to remember: a task in `done/` whose covered paths changed since its reviewed-against sha — `git diff <sha> HEAD -- <covered paths>` non-empty — is stale, and its `done/` status no longer holds.
+
+the check is a git comparison, not a re-run: it costs nothing and triggers nothing on its own. only re-review when a receipt actually shows stale, and only that task — not the batch. scope `covers` to the task's files, not the whole repo, so unrelated commits don't trip false staleness.
 
 ## communication style
 
